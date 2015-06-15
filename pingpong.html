@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ping Pong</title>
+    <style></style>
+    <script type="text/javascript">
+        var KEY_LEFT = 37, KEY_UP = 38, KEY_RIGHT = 39, KEY_DOWN = 40, KEY_A = 65, KEY_D = 68, KEY_W = 87 , KEY_SPACE = 32, speedy = 5, speedx = 5;
+        var left = 0, right = 0, A = 0, D = 0;  var player1 = "Player1", player2 = "Player2" , rect_width = 100;
+        var circle = {  
+			timer : 0,
+			start : function (startx){
+				if(this.timer == 0) {
+					setInterval(this.animate, 20);
+					this.timer = 1;
+				}
+			},
+			animate : function (){
+				input();
+				this.circ = document.getElementById("ball");
+				var circx = parseInt(this.circ.getAttribute("cx"));
+				var circy = parseInt(this.circ.getAttribute("cy"));
+				if (circy == 755) {
+					var rect2x = parseInt(rect2.getAttribute("x"));
+					if ((circx >= (rect2x - 10))  && (circx <= (rect2x + rect_width + 10)))  speedy = -5;
+				}
+				if (circy == 50) {
+					var rect1x = parseInt(rect1.getAttribute("x"));
+					if ((circx >= rect1x) && (circx <= (rect1x + rect_width)))   speedy = 5;
+				}
+				if (circx == 1090) speedx = -5;
+				if (circx == 20) speedx = 5;
+				if ((circy < 0) || (circy > 800)) document.write("Game Over");
+				this.circ.setAttribute("cy", circy + speedy);
+				this.circ.setAttribute("cx", circx + speedx);
+			}
+		}
+        function main() {
+            document.addEventListener('keydown', keyDown , false);
+            document.addEventListener('keyup', keyUp , false);
+        }
+        function input() {
+            var rect1 = document.getElementById("rect1");
+		    var x1 = parseInt(rect1.getAttribute("x"));
+		    if((left == 1) && (x1 >= 10))    x1 -= 10;
+		    if((right == 1) && (x1 <= 1000))  x1 += 10;
+		    rect1.setAttribute("x", x1);
+			var rect2 = document.getElementById("rect2");
+		    var x2 = parseInt(rect2.getAttribute("x"));
+		    if((A == 1) && (x2 >= 10))  x2 -= 10;
+			if((D == 1) && (x2 <= 1000))  x2 += 10;
+			rect2.setAttribute("x", x2);
+        }
+		function keyDown() {
+			if (event.keyCode == KEY_SPACE) circle.start(50);
+			if (event.keyCode == KEY_LEFT) left = 1;
+            if (event.keyCode == KEY_RIGHT) right = 1;
+            if (event.keyCode == KEY_A) A = 1;
+            if (event.keyCode == KEY_D) D = 1; 
+		}
+		function keyUp() {
+			if (event.keyCode == KEY_LEFT) left = 0;
+            if (event.keyCode == KEY_RIGHT) right = 0;
+            if (event.keyCode == KEY_A) A = 0;
+            if (event.keyCode == KEY_D) D = 0;
+		}
+        main();
+    </script>
+</head>
+<body>
+<svg width="100%" height="800px" >
+<line x1="0" y1="0" x2="0" y2="799" style="stroke:rgb(255,0,0);stroke-width:3" />
+<line x1="0" y1="0" x2="1110" y2="0" style="stroke:rgb(255,0,0);stroke-width:3" />
+<line x1="0" y1="799" x2="1110" y2="799" style="stroke:rgb(255,0,0);stroke-width:3" />
+<line x1="1110" y1="0" x2="1110" y2="799" style="stroke:rgb(255,0,0);stroke-width:3" />
+<rect x="5" y="5"  width="100" height="20" stroke="green" stroke-width="1" fill=#b8860b id="rect1" />
+<rect x="5" y="775"  width="100" height="20" stroke="green" stroke-width="1" fill=#b8860b id="rect2"/>
+<circle cx="300" cy="50" r="20" stroke="black" stroke-width="1" fill="#ff0000" opacity="100"  id="ball" />
+</svg>
+<h3>Press space to start the game</h3>
+</body>
+</html>
